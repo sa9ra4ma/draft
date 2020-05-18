@@ -2,7 +2,7 @@
   <div class="icon-bar">
     <ul class="nav-flex-container">
       <li v-for="team in this.teamList" :key=team.id class="team-icon-li">
-        <router-link :to="{ name: 'Team', query: { id: team.id } }">
+        <router-link :to="{ name: 'Player', query: { id: team.id } }">
           <img :src=team.icon_path class="team-icon">
         </router-link>
       </li>

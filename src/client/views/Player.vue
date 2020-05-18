@@ -1,15 +1,12 @@
 <template>
-  <div class="home">
+  <div class="player">
     <TeamIconList></TeamIconList>
-    <PlayerList></PlayerList>
-    <img alt="Vue logo" src="../assets/draft_logo.jpg">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <router-link to="/profile">プロフィール</router-link>
+    <PlayerList :id=this.id></PlayerList>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import PlayerList from '@/components/PlayerList.vue';
 import TeamIconList from '@/components/TeamIconList.vue';
 
@@ -20,7 +17,14 @@ import TeamIconList from '@/components/TeamIconList.vue';
   },
 })
 export default class Player extends Vue {
-  @Prop() private msg?: string;
+  @Prop() private id?: string;
+
+  // URLのクエリが変更になるのを検知する
+  // immediateを付与すると、監視直後（まだ変更なし）の場合にも1回呼ばれることになる
+  @Watch('$route', { immediate: true })
+  queryIdChange() {
+    this.id = this.$route.query.id as string;
+  }
 }
 
 </script>

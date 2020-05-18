@@ -35,9 +35,9 @@ const routes: RouteConfig[] = [
     component: () => import('@/components/Profile.vue'),
   },
   {
-    path: '/playerlist',
-    name: 'PlayerList',
-    component: () => import('@/components/PlayerList.vue'),
+    path: '/player',
+    name: 'Player',
+    component: () => import('@/views/Player.vue'),
   },
   {
     path: '/team',
