@@ -17,7 +17,7 @@ import TeamIconList from '@/components/TeamIconList.vue';
   },
 })
 export default class Player extends Vue {
-  @Prop() private id?: string;
+  private id: string = "";
 
   // URLのクエリが変更になるのを検知する
   // immediateを付与すると、監視直後（まだ変更なし）の場合にも1回呼ばれることになる
