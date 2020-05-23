@@ -4,10 +4,17 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "tsc": "tsc",
+    "watch:server": "ts-node-dev -T -P tsconfig.server.json --respawn src/server/app.ts",
+    "build:server": "tsc -p tsconfig.server.json"
   },
   "dependencies": {
+    "@types/express": "^4.17.6",
     "core-js": "^3.6.4",
+    "express": "^4.17.1",
+    "ts-node": "^8.10.1",
+    "ts-node-dev": "^1.0.0-pre.44",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.1",

@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",     // 左記ファイルを継承
+  "compilerOptions": {
+    "outDir": "./dist",
+    "removeComments": true, // ?
+    "paths": {
+      "@/*": [
+        "src/server/*"
+      ]
+    }
+  },
+  "exclude": [                      // ここで指定したものはコンパイル対象から除外する
+    "./src/client"
+  ]
+}

@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TPlayerSummary } from '@/types';
+import { TPlayerSummary } from '../types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
 
 @Component
 export default class PlayerList extends Vue {
