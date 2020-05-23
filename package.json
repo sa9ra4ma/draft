@@ -1,6 +1,7 @@
 {
   "name": "draft",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -11,6 +12,7 @@
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
+    "@types/cors": "^2.8.6",
     "@types/express": "^4.17.6",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
