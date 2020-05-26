@@ -4,6 +4,7 @@ const CONNECTION_URL = "mongodb+srv://dbUser:P@ssw0rd@draftcluster-ynuqw.gcp.mon
 const DATABASE_NAME = "draft";
 
 let db: any;
+let db2: any;
 
 export const connect = async () => {
     const MongoClient = MongoDB.MongoClient;
