@@ -9,59 +9,58 @@ export const router = express.Router();
 // 複数件登録する場合は、
 // [{"key": "val1"}, {"key": "val2"}]
 // TODO: 今は何でもinsertできてしまうので、制限は後日対応
-router.post('/player', function(req, res){
-    collection('players').insert(req.body, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
-        console.log(result);
+router.post('/player', async (req, res) => {
+    try {
+        const result = await collection('players').insert(req.body);
         res.json(result.insertedIds);
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })
 
 // DELETE  http://localhost:3000/api/m/player/:id
-router.delete('/player/id/:id', function(req, res){
-    collection('players').deleteMany({id: req.params.id}, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
+router.delete('/player/id/:id', async (req, res) => {
+    const cond = {id: req.params.id};
+    try {
+        const result = await collection('players').deleteMany(cond);
         res.json({
             deletedCount: result.deletedCount
         });
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })
 
 // DELETE  http://localhost:3000/api/m/player/all
-router.delete('/player/all', function(req, res){
-    collection('players').deleteMany({}, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
+router.delete('/player/all', async (req, res) => {
+    try {
+        const result = await collection('players').deleteMany({});
         res.json({
             deletedCount: result.deletedCount
         });
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })
 
 // DELETE  http://localhost:3000/api/m/player/custom
 // bodyにJSON形式で条件を設定可能
 // 条件1つの場合は、{"key":"val"}とする
 // 2つ以上の場合は、{"key":"val","key2":"val2"}とする
-router.delete('/player/custom', function(req, res){
-    collection('players').deleteMany(req.body, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
+router.delete('/player/custom', async (req, res) => {
+    try {
+        const result = await collection('players').deleteMany(req.body);
         res.json({
             deletedCount: result.deletedCount
         });
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })
-
 
 // POST  http://localhost:3000/api/m/detail
 // JSON形式データをbodyに設定してください
@@ -69,55 +68,56 @@ router.delete('/player/custom', function(req, res){
 // 複数件登録する場合は、
 // [{"key": "val1"}, {"key": "val2"}]
 // TODO: 今は何でもinsertできてしまうので、制限は後日対応
-router.post('/detail', function(req, res){
-    collection('performance').insert(req.body, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
+router.post('/detail', async (req, res) => {
+    try {
+        const result = await collection('performance').insert(req.body);
         console.log(result);
         res.json(result.insertedIds);
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })
 
 // DELETE  http://localhost:3000/api/m/delete/:id
-router.delete('/detail/id/:id', function(req, res){
-    collection('performance').deleteMany({id: req.params.id}, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
+router.delete('/detail/id/:id', async (req, res) => {
+    const cond = {id: req.query.id};
+    try {
+        const result = await collection('performance').deleteMany(cond);
         res.json({
             deletedCount: result.deletedCount
         });
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })
 
 // DELETE  http://localhost:3000/api/m/detail/all
-router.delete('/detail/all', function(req, res){
-    collection('performance').deleteMany({}, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
+router.delete('/detail/all', async (req, res) => {
+    try {
+        const result = await collection('performance').deleteMany({});
         res.json({
             deletedCount: result.deletedCount
         });
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })
 
 // DELETE  http://localhost:3000/api/m/detail/custom
 // bodyにJSON形式で条件を設定可能
 // 条件1つの場合は、{"key":"val"}とする
 // 2つ以上の場合は、{"key":"val","key2":"val2"}とする
-router.delete('/detail/custom', function(req, res){
-    collection('performance').deleteMany(req.body, (err:any, result:any) => {
-        if (err) {
-            console.error(err);
-            res.json();
-        }
+router.delete('/detail/custom', async (req, res) => {
+    try {
+        const result = await collection('performance').deleteMany(req.body);
         res.json({
             deletedCount: result.deletedCount
         });
-    })
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
 })

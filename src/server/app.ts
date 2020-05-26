@@ -10,12 +10,16 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 app.use('/api/', router);
 
-app.get('/', (req:any, res:any) => res.send('Hello World!!'));
+// 何にも一致しなかった場合
+app.use((req, res) => {
+    res.status(404).send('Not Found');
+});
 
 connect().then(() => {
-  app.listen(PORT, () => console.log(`listening on port ${PORT}!`));
+    app.listen(PORT, () => console.log(`listening on port ${PORT}!`));
 });
 
 
