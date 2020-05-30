@@ -71,7 +71,6 @@ router.delete('/player/custom', async (req, res) => {
 router.post('/detail', async (req, res) => {
     try {
         const result = await collection('performance').insert(req.body);
-        console.log(result);
         res.json(result.insertedIds);
     } catch (e) {
         console.error(e);
