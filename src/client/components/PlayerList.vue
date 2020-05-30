@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TPlayerSummary } from '../types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
+import { TPlayerSummary } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
 
 @Component
 export default class PlayerList extends Vue {
@@ -18,22 +18,31 @@ export default class PlayerList extends Vue {
 
   private playerList: TPlayerSummary[] = [
     {
-      id: 1,
-      name: '菅野 智之',
-      number: '18',
-      main_position: '投手',
+      ID: '1',
+      名前: '菅野 智之',
+      背番号: '18',
+      守備: '投手',
+      生年月日: '',
+      投打: '',
+      球団: ''
     },
     {
-      id: 2,
-      name: '丸 佳浩',
-      number: '8',
-      main_position: '中堅手',
+      ID: '2',
+      名前: '丸 佳浩',
+      背番号: '8',
+      守備: '外野手',
+      生年月日: '',
+      投打: '',
+      球団: ''
     },
     {
-      id: 3,
-      name: '坂本 勇人',
-      number: '6',
-      main_position: '遊撃手',
+      ID: '3',
+      名前: '坂本 勇人',
+      背番号: '6',
+      守備: '内野手',
+      生年月日: '',
+      投打: '',
+      球団: ''
     },
   ];
   private i: number = 0;

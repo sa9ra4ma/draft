@@ -6,14 +6,14 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TPlayerData } from '../types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
+import { TPitcherData } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
 
 
 @Component
 export default class Profile extends Vue {
   @Prop() private id!: string;
 
-  private playerDetail: TPlayerData = {
+  private playerDetail = {
     id: 1,
     name: '菅野 智之',
     number: '18',
