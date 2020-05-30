@@ -6,7 +6,6 @@ export interface TPlayerSummary {
     生年月日: string;
     投打: string;
     球団: string;
-    AAA: string;
 }
 
 export interface TPitcherData {
@@ -60,10 +59,4 @@ export interface TFielderData {
     出塁率: string;
     長打率: string;
     OPS: string;
-}
-
-export const aaa = "WWaa"
-
-export interface A {
-    aaa: string;
 }
