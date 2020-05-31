@@ -16,7 +16,7 @@ export default class Profile extends Vue {
 
   @Watch('$route', { immediate: true })
   async queryIdChange() {
-    this.id = this.$route.query.id as string;
+    this.id = this.$route.params.id as string;
     try {
       this.playerData = await getPlayerDetail(this.id);
     } catch (e) {

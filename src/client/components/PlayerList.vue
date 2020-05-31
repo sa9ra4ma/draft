@@ -2,7 +2,7 @@
   <div class="player-list">
     <ul>
       <li v-for="(player, index) in playerList" :key=index>
-        <router-link :to="{name: 'Profile', query:{id: player.ID}}">{{player.名前}}</router-link>
+        <router-link :to="{name: 'Profile', params:{id: player.ID}}">{{player.名前}}</router-link>
       </li>
     </ul>
   </div>
