@@ -25,7 +25,7 @@ router.get('/list', async (req, res) => {
 
 // GET  http://localhost:3000/api/player/detail/:id
 router.get('/detail/:id', async (req, res) => {
-    const cond = {id: req.params.id};
+    const cond = {ID: req.params.id};
     try {
         const docs: TPitcherData | TFielderData = await collection('performance').find(cond).toArray();
         res.json(docs);
