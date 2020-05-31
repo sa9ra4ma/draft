@@ -2,58 +2,32 @@
   <div class="player-list">
     <ul>
       <li v-for="(player, index) in playerList" :key=index>
-        <router-link to="/profile">{{player.name}}</router-link>
+        <router-link :to="{name: 'Profile', query:{id: player.ID}}">{{player.名前}}</router-link>
       </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { TPlayerSummary } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
+import { getPlayerSummary } from '../api';
 
 @Component
 export default class PlayerList extends Vue {
   @Prop() private id!: string;
 
-  private playerList: TPlayerSummary[] = [
-    {
-      ID: '1',
-      名前: '菅野 智之',
-      背番号: '18',
-      守備: '投手',
-      生年月日: '',
-      投打: '',
-      球団: ''
-    },
-    {
-      ID: '2',
-      名前: '丸 佳浩',
-      背番号: '8',
-      守備: '外野手',
-      生年月日: '',
-      投打: '',
-      球団: ''
-    },
-    {
-      ID: '3',
-      名前: '坂本 勇人',
-      背番号: '6',
-      守備: '内野手',
-      生年月日: '',
-      投打: '',
-      球団: ''
-    },
-  ];
-  private i: number = 0;
+  private playerList: TPlayerSummary[] = [];
+  
+  @Watch('id', { immediate: true })
+  async idChange() {
+    this.playerList= [];
 
-  private async activated() {
-    this.i++;
+    getPlayerSummary(this.id)
+      .then(res => this.playerList = res)
+      .catch(e => console.error(e));
   }
 
-  private clickbutton() {
-    this.i++;
-  }
 
 }
 </script>

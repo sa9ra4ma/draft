@@ -1,33 +1,27 @@
 <template>
   <div class="profile">
-    <h1>{{this.playerDetail.name}}</h1>
+    <h1>{{this.playerData}}</h1>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TPitcherData } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
-
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { TPitcherData,  TFielderData } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
+import { getPlayerDetail } from '../api';
 
 @Component
 export default class Profile extends Vue {
-  @Prop() private id!: string;
+  private id: string = "";
+  private playerData: TPitcherData[] | TFielderData[] = [];
 
-  private playerDetail = {
-    id: 1,
-    name: '菅野 智之',
-    number: '18',
-    main_position: '投手',
-    old: 30,
-  };
-  private i: number = 0;
-
-  private async activated() {
-    this.i++;
-  }
-
-  private clickbutton() {
-    this.i++;
+  @Watch('$route', { immediate: true })
+  async queryIdChange() {
+    this.id = this.$route.query.id as string;
+    try {
+      this.playerData = await getPlayerDetail(this.id);
+    } catch (e) {
+      console.error(e)
+    }
   }
 
 }
