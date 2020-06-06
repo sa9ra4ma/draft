@@ -2,15 +2,19 @@
   <div class="main-header">
     <div class="main-header-list">
       <div class="header-flex-1">
-        <img alt="Vue logo" src="@/assets/draft_logo.png" class="logo">
+        <router-link :to="{ name: 'Home' }">
+          <img alt="Vue logo" src="@/assets/draft_logo.png" class="logo">
+        </router-link>
       </div>
       <div class="header-flex-4">
         <h1>
           2020年ドラフト会議 supported by Tabibito
-          </h1>
+        </h1>
       </div>
       <div class="header-flex-2">
-        なんかのメニュー
+        <router-link :to="{ name: 'KeepList' }">
+          キープ
+        </router-link>
       </div>
     </div>
   </div>
@@ -22,6 +26,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class Header extends Vue {
   @Prop() private msg?: string;
+
+  private userName: string = "";
+
+  private login() {
+    document.cookie = `user-name=${this.userName}`;
+  }
 }
 </script>
 
