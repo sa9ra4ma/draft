@@ -2,7 +2,6 @@
   <div class="home">
     <TeamIconList></TeamIconList>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <router-link to="/playerlist">プロフィール</router-link>
   </div>
 </template>
 
