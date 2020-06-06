@@ -16,7 +16,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class TeamIconList extends Vue {
-  private teamId: string[] = ['g', 'yb', 't', 'c', 'd', 's', 'l', 'h', 'e', 'm', 'f', 'b']
+  private teamId: string[] = ['g', 'yb', 't', 'c', 'd', 's', 'l', 'h', 'e', 'm', 'f', 'bs']
   private teamList: Object[] = [];
 
   private async created() {
