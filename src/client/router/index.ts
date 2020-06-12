@@ -37,6 +37,11 @@ const routes: RouteConfig[] = [
     name: 'Team',
     component: () => import('@/views/Team.vue'),
   },
+  {
+    path: '/keeplist',
+    name: 'KeepList',
+    component: () => import('@/views/KeepList.vue'),
+  },
 ];
 
 const router = new VueRouter({
