@@ -1,20 +1,34 @@
 <template>
   <div class="player-list">
-    <table>
+    <!-- <table>
       <tbody>
-      <tr v-for="(p, index) in playerList" :key=index>
-        <td>
-          <button @click="shimei(p.player.ID)">指名する</button>
-        </td>
-        <td>
-          <button @click="keep(p, index)">{{p.keep ? "削除する" : "キープする"}}</button>
-        </td>
-        <td>
-          <router-link :to="{name: 'Profile', params:{id: p.player.ID}}">{{p.player.名前}}</router-link>
-        </td>
-      </tr>
+        <tr v-for="(p, index) in playerList" :key=index>
+          <td>
+            <b-btn variant="outline-info" @click="shimei(p.player.ID)">
+              <i class="far fa-thumbs-up"></i>
+            </b-btn>
+          </td>
+          <td>
+            <b-btn :variant="p.keep ? 'warning' : 'outline-warning'" @click="keep(p, index)">
+              <i :class="p.keep ? 'far fa-check-circle fa-lg' : 'fas fa-arrow-alt-circle-down fa-lg'"></i>
+            </b-btn>
+          </td>
+          <td>
+            <router-link :to="{name: 'Profile', params:{id: p.player.ID}}">{{p.player.名前}}</router-link>
+          </td>
+        </tr>
       </tbody>
-    </table>
+    </table> -->
+    <b-table striped hover :items="playerList" :fields="fields">
+      <template v-slot:cell(keep)="data">
+        <b-btn :variant="data.item.keep ? 'warning' : 'outline-warning'" @click="keep(data.item, data.index)">
+          <i :class="data.item.keep ? 'far fa-check-circle fa-lg' : 'fas fa-arrow-alt-circle-down fa-lg'"></i>
+        </b-btn>
+      </template>
+      <template v-slot:cell(名前)="data">
+        <router-link :to="{name: 'Profile', params:{id: data.item.ID}}">{{data.item.名前}}</router-link>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -23,8 +37,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { TPlayerSummary } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
 import { getPlayerSummary } from '../api';
 
-interface DispPlayerSummary {
-  player: TPlayerSummary;
+interface DispPlayerSummary extends TPlayerSummary {
   shimei: boolean;
   keep: boolean;
 }
@@ -35,6 +48,7 @@ export default class PlayerList extends Vue {
 
   private playerList: DispPlayerSummary[] = [];
   private keepList: TPlayerSummary[] = [];
+  private fields = ['keep', '背番号', '名前', '生年月日', '守備', '投打'];
   
   @Watch('id', { immediate: true })
   async idChange() {
@@ -52,7 +66,7 @@ export default class PlayerList extends Vue {
             }
           }
           const player: DispPlayerSummary = {
-            player: e,
+            ...e,
             shimei: shimei,
             keep: keep
           }
@@ -74,12 +88,12 @@ export default class PlayerList extends Vue {
     if (p.keep) {
       // 既にキープされている場合、削除
       this.keepList.forEach((e, i) => {
-        if (e.ID === p.player.ID)
+        if (e.ID === p.ID)
         this.keepList.splice(i, 1);
       });
     } else {
       // まだキープされていない場合はキープ
-      this.keepList.push(p.player);
+      this.keepList.push(p);
     }
 
     localStorage.keepPlayer = JSON.stringify(this.keepList);

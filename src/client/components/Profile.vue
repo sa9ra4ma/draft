@@ -1,6 +1,8 @@
 <template>
   <div class="profile">
-    <h1>{{this.playerData}}</h1>
+    <TeamIconList></TeamIconList>
+    <b-table striped hover :items="playerData" :fields="fields">
+    </b-table>
   </div>
 </template>
 
@@ -8,17 +10,27 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { TPitcherData,  TFielderData } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
 import { getPlayerDetail } from '../api';
+import TeamIconList from '@/components/TeamIconList.vue';
 
-@Component
-export default class Profile extends Vue {
+@Component({
+  components: {
+    TeamIconList,
+  },
+})export default class Profile extends Vue {
   private id: string = "";
   private playerData: TPitcherData[] | TFielderData[] = [];
+  private fields = ['年度','試合','勝利','敗北','セーブ','ホールド','HP','完投','完封勝','無四球','打者','投球回','被安打','被本塁打','与四球','与死球','奪三振','暴投','ボーク','失点','自責点','防御率','WHIP'];
 
   @Watch('$route', { immediate: true })
   async queryIdChange() {
     this.id = this.$route.params.id as string;
     try {
       this.playerData = await getPlayerDetail(this.id);
+      this.playerData.sort((a:any, b:any) => {
+        if( a.年度 < b.年度 ) return -1;
+        if( a.年度 > b.年度 ) return 1;
+        return 0;
+      })
     } catch (e) {
       console.error(e)
     }
@@ -26,21 +38,3 @@ export default class Profile extends Vue {
 
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

@@ -1,12 +1,21 @@
 <template>
   <div class="icon-bar">
-    <ul class="nav-flex-container">
+    <!-- <ul class="nav-flex-container">
       <li v-for="team in this.teamList" :key='team.id' class="team-icon-li">
         <router-link :to="{ name: 'Player', query: { id: team.id } }">
           <img :src='team.icon_path' class="team-icon">
         </router-link>
       </li>
-    </ul>
+    </ul> -->
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-col v-for="team in this.teamList" :key='team.id' class="team-icon-li">
+          <router-link :to="{ name: 'Player', query: { id: team.id } }">
+            <img :src='team.icon_path' class="team-icon">
+          </router-link>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 

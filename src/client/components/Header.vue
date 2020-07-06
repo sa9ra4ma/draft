@@ -1,5 +1,5 @@
 <template>
-  <div class="main-header">
+  <!-- <div class="main-header">
     <div class="main-header-list">
       <div class="header-flex-1">
         <router-link :to="{ name: 'Home' }">
@@ -17,6 +17,30 @@
         </router-link>
       </div>
     </div>
+  </div> -->
+  <div>
+    <b-navbar toggleable="lg" type="dark" variant="info">
+      <b-navbar-brand>
+        <router-link :to="{ name: 'Home' }">
+          <img alt="Vue logo" src="@/assets/mr_try.png" class="logo">
+        </router-link>
+      </b-navbar-brand>
+
+      <div><strong>2020年ドラフト会議 supported by Tabibito</strong></div>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+
+        <b-nav-item-dropdown text="Menu" right>
+          <b-dropdown-item>
+            <router-link :to="{ name: 'KeepList' }">
+              キープリスト
+            </router-link>
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
+
+      </b-navbar-nav>
+    </b-navbar>
   </div>
 </template>
 
@@ -53,8 +77,8 @@ export default class Header extends Vue {
     flex-grow: 4;
   }
   .logo {
-    width: 100px;
-    height: 100px;
+    width: 40px;
+    height: 40px;
   }
 
 </style>
