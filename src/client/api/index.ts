@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { TPlayerSummary, TPitcherData, TFielderData } from '../../common/types';
+import axios from './axios';
 
 export function getPlayerSummary(team?: string, pos?: string): Promise<TPlayerSummary[]> {
-    let url = 'http://localhost:3000/api/player/list?1=1';
+    let url = '/api/player/list?1=1';
 
     // パラメータ設定
     if (team) {
@@ -12,15 +12,15 @@ export function getPlayerSummary(team?: string, pos?: string): Promise<TPlayerSu
         url += `&pos=${pos}`;
     }
 
-    return axios.get(url)
+    return axios().get(url)
         .then(res => res.data)
         .catch(err => Promise.reject(err))
 }
 
 export function getPlayerDetail(id: string): Promise<TPitcherData[] | TFielderData[]> {
-    let url = `http://localhost:3000/api/player/detail/${id}`;
+    let url = `/api/player/detail/${id}`;
 
-    return axios.get(url)
-        .then(res => {console.log(res);return res.data})
+    return axios().get(url)
+        .then(res => res.data)
         .catch(err => Promise.reject(err))
 }
