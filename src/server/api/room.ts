@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
         const cond = {
             _id: new mongo.ObjectID(req.params.id),
         }
-        const docs: TRoom[] = await collection('room').find(cond).toArray();
+        const docs: TRoom = await collection('room').findOne(cond);
         res.json(docs);
     } catch (e) {
         console.error(e);
