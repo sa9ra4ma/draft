@@ -1,6 +1,8 @@
 import { TPlayerSummary, TPitcherData, TFielderData } from '../../common/types';
 import axios from './axios';
 
+export * from './room';
+
 export async function getPlayerSummary(team?: string, pos?: string): Promise<TPlayerSummary[]> {
     let url = '/api/player/list?1=1';
 

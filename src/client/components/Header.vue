@@ -37,19 +37,38 @@
               キープリスト
             </router-link>
           </b-dropdown-item>
+          <b-dropdown-item @click="openRoomCreateModal">
+            ルーム作成
+          </b-dropdown-item>
         </b-nav-item-dropdown>
 
       </b-navbar-nav>
     </b-navbar>
+    
+    <RoomCreate v-if="modal" @close="closeRoomCreateModal">
+    </RoomCreate>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import RoomCreate from '@/components/RoomCreate.vue';
 
-@Component
-export default class Header extends Vue {
+@Component({
+  components: {
+    RoomCreate,
+  },
+})export default class Header extends Vue {
   @Prop() private msg?: string;
+  private modal: boolean = false;
+
+  private openRoomCreateModal(){
+    this.modal = true;
+  }
+  private closeRoomCreateModal(){
+    this.modal = false;
+  }
+
 }
 </script>
 
