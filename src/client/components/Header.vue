@@ -40,6 +40,9 @@
           <b-dropdown-item @click="openRoomCreateModal">
             ルーム作成
           </b-dropdown-item>
+          <b-dropdown-item @click="openRoomSearchModal">
+            ルーム検索
+          </b-dropdown-item>
         </b-nav-item-dropdown>
 
       </b-navbar-nav>
@@ -47,26 +50,39 @@
     
     <RoomCreate v-if="modal" @close="closeRoomCreateModal">
     </RoomCreate>
+
+    <RoomSearch v-if="roomSearchModal" @close="closeRoomSearchModal">
+    </RoomSearch>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import RoomCreate from '@/components/RoomCreate.vue';
+import RoomSearch from '@/components/RoomSearch.vue';
 
 @Component({
   components: {
     RoomCreate,
+    RoomSearch,
   },
 })export default class Header extends Vue {
   @Prop() private msg?: string;
   private modal: boolean = false;
+  private roomSearchModal: boolean = false;
 
   private openRoomCreateModal(){
     this.modal = true;
   }
   private closeRoomCreateModal(){
     this.modal = false;
+  }
+
+  private openRoomSearchModal(){
+    this.roomSearchModal = true;
+  }
+  private closeRoomSearchModal(){
+    this.roomSearchModal = false;
   }
 
 }
