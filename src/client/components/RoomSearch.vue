@@ -29,13 +29,19 @@
       <p>入室します！</p>
       <template slot="footer"><div/></template>
     </Modal>
+
+    <Modal v-if="errorModal" @close="errorModal = false">
+      <template slot="header"/>
+      <p>入室に失敗しました…</p>
+      <template slot="footer"><div/></template>
+    </Modal>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';
-import { getListOfAllRooms, getRoom } from '../api';
+import { getListOfAllRooms, getRoom, enterRoom } from '../api';
 import { TRoom } from '../../common/types';
 
 @Component({
@@ -47,6 +53,7 @@ export default class RoomCreate extends Vue {
   private inputNameModal: boolean = false;
   private searchModal: boolean = true;
   private enterSuccessModal: boolean = false;
+  private errorModal: boolean = false;
   private roomList: TRoom[] = [];
   private name: string = '';
   private targetRoom: TRoom | null = null;
@@ -65,12 +72,30 @@ export default class RoomCreate extends Vue {
   }
 
   private async enterRoom() {
-    console.log(this.targetRoom, this.name)
-    this.enterSuccessModal = true;
-    setTimeout(() => {
-      this.enterSuccessModal = false;
-      this.closeSearchRoom();
-    }, 1000)
+    try {
+      if (!this.targetRoom?._id || !this.name) {
+        throw new Error('need more infomation');
+      }
+
+      const enterObj = {
+        name: this.name,
+        roomId: this.targetRoom?._id
+      }
+      const enterRes = await enterRoom(enterObj);
+
+      this.enterSuccessModal = true;
+      setTimeout(() => {
+        this.enterSuccessModal = false;
+        this.closeSearchRoom();
+      }, 1000)
+    } catch(err) {
+      // エラーモーダル表示
+      this.errorModal = true;
+      console.error(err);
+      setTimeout(() => {
+        this.errorModal = false;
+      }, 3000);
+    }
   }
 
   private async closeSuccess() {

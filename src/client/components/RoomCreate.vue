@@ -5,6 +5,7 @@
         ルーム作成
       </template>
       <div>ルーム名<input v-model="roomName"></div>
+      <div>ユーザー名<input v-model="userName"></div>
       <template slot="footer">
         <button @click="clickRoomCreate">作成</button>
       </template>
@@ -12,7 +13,13 @@
     
     <Modal v-if="createSuccess" @close="createSuccess=false">
       <template slot="header"/>
-      <p>部屋が作成されました！</p>
+      <div>部屋が作成されました！</div>
+      <template slot="footer"/>
+    </Modal>
+
+    <Modal v-if="errorModal" @close="errorModal=false">
+      <template slot="header"/>
+      <div v-html="errorMessage"></div>
       <template slot="footer"/>
     </Modal>
   </div>
@@ -21,7 +28,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';
-import { createRoom } from '../api/';
+import { createRoom, enterRoom } from '../api/';
 
 @Component({
   components: {
@@ -30,10 +37,32 @@ import { createRoom } from '../api/';
 })
 export default class RoomCreate extends Vue {
   private roomName: string = '';
+  private userName: string = '';
+  private errorMessage: string = '';
   private createSuccess: boolean = false;
   private createModal: boolean = true;
+  private errorModal: boolean = false;
 
   private async clickRoomCreate() {
+
+    // 各情報が入力されているかチェック
+    if (!this.roomName) {
+      this.errorMessage += '部屋名を入力してください！<br>';
+    }
+    if (!this.userName) {
+      this.errorMessage += 'ユーザー名を入力してください！';
+    }
+
+    // 入力されていない場合、入力を促すモーダルを表示
+    if (this.errorMessage) {
+      this.errorModal = true;
+      setTimeout(() => {
+        this.errorModal = false;
+        this.errorMessage = '';
+      }, 3000);
+      return;
+    }
+
     // TODO★: 入力値のチェック
 
     const createObj = {
@@ -43,6 +72,14 @@ export default class RoomCreate extends Vue {
     try {
       // 部屋作成API呼び出し
       const res = await createRoom(createObj);
+      console.log(res)
+
+      const enterObj = {
+        name: this.userName,
+        roomId: res[0]
+      }
+      // 入室API呼び出し
+      const enterRes = await enterRoom(enterObj);
 
       // 作成成功メッセージを表示
       this.createSuccess = true;
