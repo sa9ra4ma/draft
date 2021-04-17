@@ -1,4 +1,5 @@
 import axios from './axios';
+import { TEnterInfo } from '../../common/types';
 
 // イベントの取得
 export async function getEvents(roomId: string, order: number): Promise<any> {
@@ -7,7 +8,7 @@ export async function getEvents(roomId: string, order: number): Promise<any> {
     if (!roomId) {
         throw new Error('room id none');
     }
-    if (!order) {
+    if (!order && order !== 0) {
         throw new Error('order none');
     }
 
@@ -23,19 +24,19 @@ export async function getEvents(roomId: string, order: number): Promise<any> {
 }
 
 // イベントの送信
-export async function postEvents(roomId: string, memberId: string, type: string, content: string): Promise<any> {
+export async function postEvents(enterInfo: TEnterInfo, type: string, content: string): Promise<any> {
     let url = '/api/event/';
 
-    if (!roomId) {
-        throw new Error('room id none');
+    if (!enterInfo?.roomId || !enterInfo?.memberId || !type ) {
+        throw new Error('not enough infomation');
     }
 
-    url += roomId;
+    url += enterInfo.roomId;
 
     const insObj = {
-        memberId: memberId,
+        memberId: enterInfo.memberId,
         type: type,
-        content: content
+        content: content || ''
     }
 
     try {
