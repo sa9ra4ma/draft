@@ -5,3 +5,7 @@ export interface TRoom {
     delete_time: object;
 }
 
+export interface TEnterInfo {
+    roomId: string;
+    memberId: string;
+}
