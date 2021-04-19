@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <Header @enterLeave="enterLeave"></Header>
     <!-- <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> -->
-    <router-view/>
+    <router-view :enterInfo="this.enterInfo"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Header from '@/components/Header.vue';
+import { TEnterInfo } from '../common/types';
 
 @Component({
   components: {
@@ -17,7 +18,11 @@ import Header from '@/components/Header.vue';
   },
 })
 export default class App extends Vue {
-  
+  private enterInfo: TEnterInfo = { roomId: '', memberId: '' };
+
+  private enterLeave(enterInfo: TEnterInfo) {
+    this.enterInfo = enterInfo;
+  }
 }
 
   

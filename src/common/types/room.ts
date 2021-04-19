@@ -1,5 +1,5 @@
 export interface TRoom {
-    _id: object;
+    _id: object | string;
     name: string;
     create_time: object;
     delete_time: object;

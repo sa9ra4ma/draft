@@ -27,6 +27,9 @@
       </b-navbar-brand>
 
       <div><strong>2020年ドラフト会議 supported by Tabibito</strong></div>
+      <b-btn variant="success" v-if="entered" @click="chatModal = true">
+        <i class="fas fa-door-open"></i>
+      </b-btn>
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
@@ -48,6 +51,9 @@
       </b-navbar-nav>
     </b-navbar>
     
+    <Chat v-if="chatModal" @close="chatModal = false" :enterInfo="this.enterInfo">
+    </Chat>
+
     <RoomCreate v-if="modal" @close="closeRoomCreateModal">
     </RoomCreate>
 
@@ -57,32 +63,49 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import RoomCreate from '@/components/RoomCreate.vue';
 import RoomSearch from '@/components/RoomSearch.vue';
+import Chat from '@/components/Chat.vue';
+import { TEnterInfo } from '../../common/types';
 
 @Component({
   components: {
     RoomCreate,
     RoomSearch,
+    Chat,
   },
 })export default class Header extends Vue {
   @Prop() private msg?: string;
   private modal: boolean = false;
   private roomSearchModal: boolean = false;
+  private chatModal: boolean = false;
+  private enterInfo: TEnterInfo = { roomId: '', memberId: '' };
+  private entered: boolean = false;
 
   private openRoomCreateModal(){
     this.modal = true;
   }
-  private closeRoomCreateModal(){
+  private closeRoomCreateModal(enterInfo: TEnterInfo){
     this.modal = false;
+    this.enterInfo = enterInfo || this.enterInfo;
   }
 
   private openRoomSearchModal(){
     this.roomSearchModal = true;
   }
-  private closeRoomSearchModal(){
+  private closeRoomSearchModal(enterInfo: TEnterInfo){
     this.roomSearchModal = false;
+    this.enterInfo = enterInfo || this.enterInfo;
+  }
+  
+  // 部屋入室情報を監視
+  @Watch('enterInfo', { immediate: false })
+  async enterInfoChange() {
+    // 部屋IDとメンバーIDがある場合、入室済みと判断
+    if (this.enterInfo?.roomId && this.enterInfo?.memberId) this.entered = true;
+    else this.entered = false;
+    this.$emit('enterLeave', this.enterInfo);
   }
 
 }

@@ -29,6 +29,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';
 import { createRoom, enterRoom } from '../api/';
+import { TEnterInfo } from '../../common/types';
 
 @Component({
   components: {
@@ -43,6 +44,7 @@ export default class RoomCreate extends Vue {
   private createModal: boolean = true;
   private errorModal: boolean = false;
 
+  // 作成ボタン押下時イベント
   private async clickRoomCreate() {
 
     // 各情報が入力されているかチェック
@@ -72,8 +74,6 @@ export default class RoomCreate extends Vue {
     try {
       // 部屋作成API呼び出し
       const res = await createRoom(createObj);
-      console.log(res)
-
       const enterObj = {
         name: this.userName,
         roomId: res[0]
@@ -84,12 +84,17 @@ export default class RoomCreate extends Vue {
       // 作成成功メッセージを表示
       this.createSuccess = true;
 
+      const emitInfo: TEnterInfo = {
+        roomId: res[0],
+        memberId: enterRes[0]
+      }
+
       // 成功メッセージと部屋作成モーダルを少しずらして閉じる
       setTimeout(() => {
         this.createSuccess = false;
       }, 1000);
       setTimeout(() => {
-        this.closeRoomCreate();
+        this.closeRoomCreate(emitInfo);
       }, 1500);
 
     } catch(e) {
@@ -98,12 +103,12 @@ export default class RoomCreate extends Vue {
   }
 
   // 部屋作成モーダルを閉じる
-  private async closeRoomCreate(){
+  private async closeRoomCreate(info?: any){
     this.createModal = false;
     
     // すぐにcloseイベントを親に渡すとモーダルが消えるアニメーションが見えなくなるので、1秒後にemitする
     setTimeout(() => {
-      this.$emit('close');
+      this.$emit('close', info);
     }, 1000);
   }
 }

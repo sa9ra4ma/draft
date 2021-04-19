@@ -26,13 +26,13 @@
     
     <Modal v-if="enterSuccessModal" @close="closeSuccess">
       <template slot="header"/>
-      <p>入室します！</p>
+      <div>入室します！</div>
       <template slot="footer"><div/></template>
     </Modal>
 
     <Modal v-if="errorModal" @close="errorModal = false">
       <template slot="header"/>
-      <p>入室に失敗しました…</p>
+      <div>入室に失敗しました…</div>
       <template slot="footer"><div/></template>
     </Modal>
   </div>
@@ -42,7 +42,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';
 import { getListOfAllRooms, getRoom, enterRoom } from '../api';
-import { TRoom } from '../../common/types';
+import { TRoom, TEnterInfo } from '../../common/types';
 
 @Component({
   components: {
@@ -84,9 +84,15 @@ export default class RoomCreate extends Vue {
       const enterRes = await enterRoom(enterObj);
 
       this.enterSuccessModal = true;
+
+      const emitInfo: TEnterInfo = {
+        roomId: (this.targetRoom?._id as string),
+        memberId: enterRes[0]
+      }
+
       setTimeout(() => {
         this.enterSuccessModal = false;
-        this.closeSearchRoom();
+        this.closeSearchRoom(emitInfo);
       }, 1000)
     } catch(err) {
       // エラーモーダル表示
@@ -104,7 +110,7 @@ export default class RoomCreate extends Vue {
   }
 
   // 部屋検索モーダルを閉じる
-  private async closeSearchRoom(){
+  private async closeSearchRoom(info?: TEnterInfo){
     setTimeout(() => {
       this.inputNameModal = false;
     }, 100);
@@ -114,7 +120,7 @@ export default class RoomCreate extends Vue {
     
     // すぐにcloseイベントを親に渡すとモーダルが消えるアニメーションが見えなくなるので、少しずらしてemitする
     setTimeout(() => {
-      this.$emit('close');
+      this.$emit('close', info);
     }, 1000);
   }
 }

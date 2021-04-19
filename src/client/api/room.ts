@@ -29,7 +29,7 @@ export async function getRoom(id: string): Promise<TRoom> {
     }
 }
 
-export async function createRoom(body: object): Promise<TRoom[]> {
+export async function createRoom(body: object): Promise<any> {
     const url = '/api/room';
 
     try {
