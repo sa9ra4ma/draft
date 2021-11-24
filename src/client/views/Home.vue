@@ -4,11 +4,12 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 
     <!-- Bootstrap test -->
-    <button class="btn btn-primary">ボタン</button>
+    <!-- 同じボタンが表示される -->
+    <!-- <button class="btn btn-primary">ボタン</button>
     <div class="col-3 border bg-secondary">
       <h2><i class="fas fa-database pr-1"></i>データ一覧</h2>
     </div>
-    <b-btn>ボタン</b-btn>
+    <b-btn variant="primary">ボタン</b-btn> -->
     <!-- Bootstrap test -->
 
   </div>

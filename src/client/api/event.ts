@@ -2,7 +2,7 @@ import axios from './axios';
 import { TEnterInfo } from '../../common/types';
 
 // イベントの取得
-export async function getEvents(roomId: string, order: number): Promise<any> {
+export async function getEvents(roomId: string, order: number): Promise<any[]> {
     let url = '/api/event/';
 
     if (!roomId) {

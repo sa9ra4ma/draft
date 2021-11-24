@@ -87,7 +87,7 @@ export default class RoomCreate extends Vue {
 
       const emitInfo: TEnterInfo = {
         roomId: (this.targetRoom?._id as string),
-        memberId: enterRes[0]
+        memberId: enterRes
       }
 
       setTimeout(() => {

@@ -10,9 +10,14 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col v-for="team in this.teamList" :key='team.id' class="team-icon-li">
-          <router-link :to="{ name: 'Player', query: { id: team.id } }">
-            <img :src='team.icon_path' class="team-icon">
-          </router-link>
+          <template v-if="link">
+            <router-link :to="{ name: 'Player', query: { id: team.id } }">
+              <img :src='team.icon_path' class="team-icon">
+            </router-link>
+          </template>
+          <template v-else>
+            <img :src='team.icon_path' class="team-icon" @click="emitTeam(team.id)">
+          </template>
         </b-col>
       </b-row>
     </b-container>
@@ -25,6 +30,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class TeamIconList extends Vue {
+  @Prop({ default: true }) private link!: boolean;        // True: router-link, False: Teamの頭文字を親に返却する
   private teamId: string[] = ['g', 'yb', 't', 'c', 'd', 's', 'l', 'h', 'e', 'm', 'f', 'bs']
   private teamList: Object[] = [];
 
@@ -35,6 +41,10 @@ export default class TeamIconList extends Vue {
         icon_path: require(`@/assets/logo_${e}_m.gif`), 
       };
     });
+  }
+
+  private async emitTeam(teamId: string) {
+    this.$emit('teamChange', teamId);
   }
 }
 

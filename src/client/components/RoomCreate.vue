@@ -86,7 +86,7 @@ export default class RoomCreate extends Vue {
 
       const emitInfo: TEnterInfo = {
         roomId: res[0],
-        memberId: enterRes[0]
+        memberId: enterRes
       }
 
       // 成功メッセージと部屋作成モーダルを少しずらして閉じる

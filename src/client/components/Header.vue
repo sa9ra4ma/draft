@@ -28,7 +28,12 @@
 
       <div><strong>2020年ドラフト会議 supported by Tabibito</strong></div>
       <b-btn variant="success" v-if="entered" @click="chatModal = true">
-        <i class="fas fa-door-open"></i>
+        <i class="fas fa-comment"></i>
+      </b-btn>
+      <b-btn variant="secondary" v-if="entered">
+        <router-link :to="{ name: 'Draft' }" style="color:inherit">
+          <i class="fas fa-door-open"></i>
+        </router-link>
       </b-btn>
 
       <!-- Right aligned nav items -->
@@ -100,7 +105,7 @@ import { TEnterInfo } from '../../common/types';
   }
   
   // 部屋入室情報を監視
-  @Watch('enterInfo', { immediate: false })
+  @Watch('enterInfo', { immediate: false, deep: true })
   async enterInfoChange() {
     // 部屋IDとメンバーIDがある場合、入室済みと判断
     if (this.enterInfo?.roomId && this.enterInfo?.memberId) this.entered = true;

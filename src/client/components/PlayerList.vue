@@ -25,6 +25,11 @@
           <i :class="data.item.keep ? 'far fa-check-circle fa-lg' : 'fas fa-arrow-alt-circle-down fa-lg'"></i>
         </b-btn>
       </template>
+      <template v-slot:cell(指名)="data">
+        <b-btn :variant="data.item.keep ? 'warning' : 'outline-warning'" @click="nomination(data.item, data.index)">
+          <i :class="data.item.keep ? 'far fa-check-circle fa-lg' : 'fas fa-arrow-alt-circle-down fa-lg'"></i>
+        </b-btn>
+      </template>
       <template v-slot:cell(名前)="data">
         <router-link :to="{name: 'Profile', params:{id: data.item.ID}}">{{data.item.名前}}</router-link>
       </template>
@@ -34,8 +39,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { TPlayerSummary } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
+import { TPlayerSummary, TEnterInfo } from '../../common/types';           // TODO: @でパスの指定ができない（tsconfig.client.jsonがみれてない？）
 import { getPlayerSummary } from '../api';
+import { getEvents, postEvents } from '../api';
 
 interface DispPlayerSummary extends TPlayerSummary {
   shimei: boolean;
@@ -45,10 +51,14 @@ interface DispPlayerSummary extends TPlayerSummary {
 @Component
 export default class PlayerList extends Vue {
   @Prop() private id!: string;
+  @Prop() private drafting?: boolean = false;
+  @Prop() private enterInfo?: TEnterInfo;
 
   private playerList: DispPlayerSummary[] = [];
   private keepList: TPlayerSummary[] = [];
-  private fields = ['keep', '背番号', '名前', '生年月日', '守備', '投打'];
+  private fields = this.drafting
+                    ? ['keep', '指名', '背番号', '名前', '生年月日', '守備', '投打']
+                    : ['keep', '背番号', '名前', '生年月日', '守備', '投打'];
   
   @Watch('id', { immediate: true })
   async idChange() {
@@ -76,6 +86,13 @@ export default class PlayerList extends Vue {
       .catch(e => console.error(e));
   }
 
+  @Watch('drafting', { immediate: true })
+  async draftingChange() {
+    this.fields = this.drafting
+                    ? ['keep', '指名', '背番号', '名前', '生年月日', '守備', '投打']
+                    : ['keep', '背番号', '名前', '生年月日', '守備', '投打'];
+  }
+
   private created() {
     this.keepList = localStorage.keepPlayer ? JSON.parse(localStorage.keepPlayer) : [];
   }
@@ -98,6 +115,20 @@ export default class PlayerList extends Vue {
 
     localStorage.keepPlayer = JSON.stringify(this.keepList);
     this.playerList[i].keep = p.keep ? false : true;
+  }
+
+  private async nomination(p: DispPlayerSummary, i: number) {
+    const contentObj = {
+      room_id: this.enterInfo!.roomId,
+      member_id: this.enterInfo!.memberId,
+      turn: 1,
+      duplicate_turn: 1,
+      nomination_id: p.ID,
+      nomination_time: new Date()
+    }
+    const content = JSON.stringify(contentObj);
+
+    const res = await postEvents(this.enterInfo!, '60', content);
   }
 
 

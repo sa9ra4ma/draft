@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
     try {
         const docs: TRoom[] = await collection('room').find().toArray();
         res.json(docs);
+
     } catch (e) {
         console.error(e);
         res.status(500).send();
@@ -47,8 +48,9 @@ router.post('/', async (req, res) => {
 
         // 部屋名のチェック　★TODO
 
-        const newRoomInfo = {
+        const newRoomInfo: TRoom = {
             name: roomName,
+            status: 1,
             create_time: new Date(),
             delete_time: null
         }
@@ -79,3 +81,28 @@ router.delete('/:id', async (req, res) => {
         res.status(500).send();
     }
 })
+
+// ルーム開始
+// PUT http://localhost:3000/api/room/start/:id
+router.put('/start/:id', async (req, res) => {
+    try {
+        if( !req?.params?.id ) {
+            throw new Error('room id is none');
+        }
+
+        const cond = {
+            _id: new mongo.ObjectID(req.params.id),
+        }
+        const updObj = {
+            $set: {
+                status: 2
+            }
+        }
+        const result = await collection('room').update(cond, updObj);
+        res.json({deletedCount: result.result.n});
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+})
+

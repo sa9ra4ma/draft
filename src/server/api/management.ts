@@ -120,3 +120,54 @@ router.delete('/detail/custom', async (req, res) => {
         res.status(500).send();
     }
 })
+
+// ルーム全削除
+// DELETE  http://localhost:3000/api/m/room
+router.delete('/room', async (req, res) => {
+    try {
+        const result = await collection('room').deleteMany();
+        res.json({
+            deletedCount: result.deletedCount
+        });
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+})
+
+// イベント全件削除
+// DELETE  http://localhost:3000/api/m/event
+router.delete('/event', async (req, res) => {
+    try {
+        const result = await collection('events').deleteMany();
+        console.log(result)
+        res.json({deletedCount: result.deletedCount});
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+})
+
+// メンバー全削除
+// DELETE  http://localhost:3000/api/m/event
+router.delete('/member', async (req, res) => {
+    try {
+        const result = await collection('member').deleteMany();
+        res.json({deletedCount: result.deletedCount});
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+})
+
+// 指名履歴全削除
+// DELETE  http://localhost:3000/api/m/nomination
+router.delete('/nomination', async (req, res) => {
+    try {
+        const result = await collection('nomination_history').deleteMany();
+        res.json({deletedCount: result.deletedCount});
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+})

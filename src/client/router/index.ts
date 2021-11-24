@@ -42,6 +42,11 @@ const routes: RouteConfig[] = [
     name: 'KeepList',
     component: () => import('@/views/KeepList.vue'),
   },
+  {
+    path: '/draft',
+    name: 'Draft',
+    component: () => import('@/views/Draft.vue'),
+  },
 ];
 
 const router = new VueRouter({
